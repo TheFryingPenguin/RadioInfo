@@ -36,6 +36,11 @@ public class EpisodeCollector {
     }
 
     public void scheduledEpisodes(String channalId){
+        ApiCollector apiCollector = new ApiCollector();
+        Document document = apiCollector.getDocument("http://api.sr.se/v2/channels");
+        document.getDocumentElement().normalize();
+        NodeList pages = document.getElementsByTagName("totalpages");
+
         try {
             for (int pageNr = 1;pageNr<=7;pageNr++){
                 if(endSearch == true){
@@ -52,7 +57,7 @@ public class EpisodeCollector {
                     }else{
                         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                         DocumentBuilder docBuilder = factory.newDocumentBuilder();
-                        Document document = docBuilder.parse(url.openStream());
+                        //Document document = docBuilder.parse(url.openStream());
                         document.getDocumentElement().normalize();
                         ImageIcon image = null;
                         NodeList epList = document.getElementsByTagName("scheduledepisode");
@@ -88,7 +93,7 @@ public class EpisodeCollector {
                     }
                 }
             }
-        } catch (IOException | ParserConfigurationException | SAXException e) {
+        } catch (IOException | ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
 
